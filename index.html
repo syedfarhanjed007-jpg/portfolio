@@ -42,7 +42,7 @@
     /* Matrix Canvas */
     #matrix-canvas{
       position:fixed;top:0;left:0;width:100%;height:100%;
-      z-index:0;pointer-events:none;opacity:0.15
+      z-index:0;pointer-events:none;opacity:0.6
     }
 
     /* Custom Cursor */
@@ -402,7 +402,10 @@
     }
     @keyframes border-glow-pulse{0%,100%{box-shadow:0 0 10px rgba(0,255,65,0.1),inset 0 0 10px rgba(0,255,65,0.03)}50%{box-shadow:0 0 25px rgba(0,255,65,0.25),inset 0 0 20px rgba(0,255,65,0.06)}}
     @keyframes slide-in-right{from{opacity:0;transform:translateX(50px)}to{opacity:1;transform:translateX(0)}}
+    @keyframes type-line{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
 
+    /* Running code lines */
+    .sys-run-line{opacity:0;animation:type-line .35s ease forwards}
     /* Responsive */
     @media(max-width:768px){
       .hero-section{flex-direction:column;padding:80px 1.5rem 2rem}
@@ -493,14 +496,24 @@
           <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
           <span class="panel-title">&nbsp;>_ system.info</span>
         </div>
-        <div class="panel-body">
-          <div class="sys-line"><span class="sys-key">Name:</span><span class="sys-val">Syed Farhan</span></div>
-          <div class="sys-line"><span class="sys-key">Title:</span><span class="sys-val">AI / Software Engineer</span></div>
-          <div class="sys-line"><span class="sys-key">Location:</span><span class="sys-val">Jeddah, Saudi Arabia</span></div>
-          <div class="sys-line"><span class="sys-key">Status:</span><span class="sys-val" style="color:var(--green)">● Available</span></div>
-          <div class="sys-line"><span class="sys-key">Agent:</span><span class="sys-val">Sifra v2.0</span></div>
-          <div class="sys-line"><span class="sys-key">Uptime:</span><span class="sys-val">127 days</span></div>
-          <div class="sys-line"><span class="sys-key">Stack:</span><span class="sys-val">Python · FastAPI · React</span></div>
+        <div class="panel-body" id="sys-output" style="font-size:.82rem;line-height:1.7">
+          <div class="term-line"><span class="term-prompt">$</span> <span class="term-cmd">./fetch_system_info.sh</span></div>
+          <div class="sys-run-line" data-delay="1"><span class="term-prompt" style="color:var(--green-dim)">&gt;</span> fetching user profile...</div>
+          <div class="sys-run-line" data-delay="2" style="color:var(--green)">✓ Name: Syed Farhan</div>
+          <div class="sys-run-line" data-delay="3"><span class="term-prompt" style="color:var(--green-dim)">&gt;</span> resolving role...</div>
+          <div class="sys-run-line" data-delay="4" style="color:var(--green)">✓ Title: AI / Software Engineer</div>
+          <div class="sys-run-line" data-delay="5"><span class="term-prompt" style="color:var(--green-dim)">&gt;</span> locating...</div>
+          <div class="sys-run-line" data-delay="6" style="color:var(--green)">✓ Location: Jeddah, Saudi Arabia</div>
+          <div class="sys-run-line" data-delay="7"><span class="term-prompt" style="color:var(--green-dim)">&gt;</span> checking status...</div>
+          <div class="sys-run-line" data-delay="8" style="color:var(--green)">✓ Status: <span style="color:var(--green)">● Available</span></div>
+          <div class="sys-run-line" data-delay="9"><span class="term-prompt" style="color:var(--green-dim)">&gt;</span> initializing agent...</div>
+          <div class="sys-run-line" data-delay="10" style="color:var(--cyan)">✓ Agent: Sifra v2.0 — ONLINE</div>
+          <div class="sys-run-line" data-delay="11"><span class="term-prompt" style="color:var(--green-dim)">&gt;</span> uptime check...</div>
+          <div class="sys-run-line" data-delay="12" style="color:var(--green)">✓ Uptime: 127 days</div>
+          <div class="sys-run-line" data-delay="13"><span class="term-prompt" style="color:var(--green-dim)">&gt;</span> scanning stack...</div>
+          <div class="sys-run-line" data-delay="14" style="color:var(--green)">✓ Stack: Python · FastAPI · React</div>
+          <div class="sys-run-line" data-delay="15" style="color:var(--green-dim)">→ system.info loaded successfully</div>
+          <div class="term-line" style="margin-top:6px"><span class="term-prompt">$</span> <span class="cursor-blink">█</span></div>
         </div>
       </div>
     </div>
@@ -972,6 +985,16 @@
         if(t) t.scrollIntoView({behavior:'smooth',block:'start'});
       });
     });
+
+    // ===== SYS INFO RUNNING CODE =====
+    (function(){
+      const lines = document.querySelectorAll('#sys-output .sys-run-line');
+      lines.forEach((line, i) => {
+        const delay = parseInt(line.getAttribute('data-delay')) || (i + 1);
+        line.style.animationDelay = (delay * 400) + 'ms';
+        setTimeout(() => { line.style.opacity = '1'; }, delay * 400);
+      });
+    })();
   </script>
 </body>
 </html>
