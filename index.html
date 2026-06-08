@@ -791,6 +791,37 @@
   </section>
 
   <script>
+    // ===== CONTACT FORM =====
+    (function(){
+      const form = document.getElementById('contact-form');
+      if(!form) return;
+      form.addEventListener('submit', async function(e){
+        e.preventDefault();
+        const btn = form.querySelector('button[type="submit"]');
+        const origText = btn.innerHTML;
+        btn.innerHTML = '<span class="btn-text">SENDING...</span>';
+        btn.disabled = true;
+
+        const fd = new FormData(form);
+        try {
+          const res = await fetch('/send-message.php', { method: 'POST', body: fd });
+          const data = await res.json();
+          if(data.success){
+            btn.innerHTML = '<span class="btn-text" style="color:var(--black)">✓ SENT</span>';
+            form.reset();
+          } else {
+            btn.innerHTML = '<span class="btn-text">✗ ERROR</span>';
+          }
+        } catch(e){
+          btn.innerHTML = '<span class="btn-text">✗ ERROR</span>';
+        }
+        setTimeout(() => {
+          btn.innerHTML = origText;
+          btn.disabled = false;
+        }, 3000);
+      });
+    })();
+
     // ===== MATRIX CODE RAIN =====
     (function(){
       const canvas = document.getElementById('matrix-canvas');
