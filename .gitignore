@@ -1,0 +1,8 @@
+# Video files are large - download separately if needed
+*.mp4
+*.webm
+*.mov
+
+# OS files
+.DS_Store
+Thumbs.db
